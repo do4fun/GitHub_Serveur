@@ -1,6 +1,6 @@
-drop table users;
-drop table logbook;
-drop table dispatch;
+drop table git_users;
+drop table git_logbook;
+drop table git_dispatch;
 
 CREATE TABLE IF NOT EXISTS git_users (id INTEGER PRIMARY KEY AUTO_INCREMENT, username VARCHAR(20), userpassword VARCHAR(20), usertype VARCHAR(2));
 CREATE TABLE IF NOT EXISTS git_logbook (id INTEGER PRIMARY KEY AUTO_INCREMENT, userid INTEGER, logbookdate VARCHAR(20), arrivalHour VARCHAR(2), arrivalMinute VARCHAR(2), departureHour VARCHAR(2), departureMinute VARCHAR(2), activity VARCHAR(15));
