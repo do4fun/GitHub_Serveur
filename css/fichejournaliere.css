@@ -1,0 +1,97 @@
+
+@media screen and (min-width: 200px) {
+	.template_size {
+		width: 16.5%;
+	}
+}
+
+@media screen and (min-width: 325px) {
+	.template_size {
+		width: 17%;
+	}
+}
+
+@media screen and (min-width: 370px) {
+	.template_size {
+		width: 18%;
+	}
+}
+
+
+@media screen and (min-width: 410px) {
+	.template_size {
+		width: 18%;
+	}
+}
+
+@media screen and (min-width: 510px) {
+	.template_size {
+		width: 19.9%;
+	}
+}
+
+@media screen and (min-width: 635px) {
+	.template_size {
+		width: 20%;
+	}
+}
+
+@media screen and (min-width: 725px) {
+	.template_size {
+		width: 21.5%;
+	}
+}
+
+@media screen and (min-width: 1098px) {
+	.template_size {
+		width: 23%;
+	}
+}
+
+.square_template{
+	width: 4%;
+	float: left;
+}
+
+.template_size {
+	height: 8px;
+}
+
+.line_template{
+	width: 100%;
+	float: left;
+}
+
+.template {
+    display: -webkit-flex;
+    display: flex;
+    -webkit-flex-wrap: wrap;
+    flex-wrap: wrap;
+    -webkit-align-content: center;
+    align-content: center;
+}
+
+.bottom_template {
+	border-bottom: 1px solid #80ccff;
+}
+
+.left_template {
+ 	border-left: 1px solid #80ccff;
+}
+
+.left_blank_template {
+ 	border-left: 1px solid #FFFFFF;
+}
+
+.left_bold_template {
+ 	border-left: 2px solid #000000;
+}
+
+.top_bold_template {
+ 	border-top: 2px solid #000000;
+	height: 6px;
+}
+
+.bottom_bold_template {
+ 	border-bottom: 1px solid #000000;
+}
