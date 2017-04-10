@@ -1,4 +1,4 @@
-
+/*
 $(document).ready(
 	function(){
 /*		$('#offduty #00h #padding #00m, #offduty #00h #padding #15m, #offduty #00h #padding #30m, #offduty #00h #padding #45m').addClass('template_size left_blank_template')
@@ -13,3 +13,4 @@ $(document).ready(
 
 		$('#offduty').css("width","100%")
 	});
+*/
