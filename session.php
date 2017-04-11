@@ -2,8 +2,6 @@
 
 require_once( './db/connexion.php' );
 
-sessionExist( '1491872677' );
-
 // This function test if the session id exist and is active and return true if the last access date/time of this session is under 1 day.
 function sessionExist( $session ){
 	$connection = mysqli_connect(HOST, USER, PASS, DB) or die("Error " . mysqli_error($connection));
