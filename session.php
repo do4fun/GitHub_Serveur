@@ -2,6 +2,7 @@
 
 require_once( './db/connexion.php' );
 
+
 // This function test if the session id exist and is active and return true if the last access date/time of this session is under 1 day.
 function sessionExist( $session ){
 	$connection = mysqli_connect(HOST, USER, PASS, DB) or die("Error " . mysqli_error($connection));
@@ -35,7 +36,7 @@ function generateSessionId(){
 // Update last access column into session table for specific user id passed parameter
 function updateLastAccess( $sessionid ){
 	$connection = mysqli_connect(HOST, USER, PASS, DB) or die("Error " . mysqli_error($connection));
-	$sql = "UPDATE git_session lastaccess = " . time() . " WHERE sessionid = " . $sessionid ;
+	$sql = "UPDATE git_session lastaccess = " . time(); //. " WHERE sessionid = " . $sessionid ;
 	$connection = mysqli_connect(HOST, USER, PASS, DB) or die("Error " . mysqli_error($connection));
 	mysqli_query($connection, $sql);	
 }
@@ -56,9 +57,7 @@ if( $_GET['username'] != null && $_GET['passw'] != null ){
 		} else {
 			echo "Error: " . $sql . "<br>" . $conn->error;
 		}
-	}
-	echo "NOK";
-	
+	}	
 }
 
 ?>
