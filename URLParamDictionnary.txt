@@ -1,0 +1,52 @@
+USER.PHP
+required : sessionid
+	// SERVICE : Verify user type
+	required : usertype
+		required : userid
+	// SERVICE : Update driver's data
+	required : updatedriver
+		required : userid
+			optional : username
+			optional : password
+
+		
+DISPATCH.PHP	
+required : sessionid
+required : dispatchid
+	//SERVICE : Return all active drivers linked for a dispatch id passed in parameter in URL
+	required : getdriveridof
+	//SERVICE : Create driver and link him to a dispatch
+		required : createdriver
+		required : username
+		required : password
+		required :  usertype
+		required : active
+	//SERVICE : Update driver's datas linked to a dispatch id
+	required : updatedriver
+		// update from username
+		required : username
+			// Update usertype
+			optional : usertype
+			// Enable, disable user
+			optional : active
+		// update from user id
+		required : userid
+			// Update usertype
+			optional : usertype
+			// Enable, disable user
+			optional : active
+
+
+SESSION.PHP
+
+//Create session id for a user
+	-- TEST : crée plusieurs enregistrement pour le même userid
+required : username
+required : passw
+
+LOGBOOK.PHP
+//Manage Log and LogBook
+required : sessionid
+	// Add record into the database
+	required : activity
+	required : userid
