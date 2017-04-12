@@ -43,21 +43,24 @@ function updateLastAccess( $sessionid ){
 
 // This script is used to verify if user name and password passed in URL parameter are linked with a active user in the database
 if( $_GET['username'] != null && $_GET['passw'] != null ){
-	$connection = mysqli_connect(HOST, USER, PASS, DB) or die("Error " . mysqli_error($connection));
 	$sql = "SELECT * FROM git_users WHERE username = " . $_GET['username'] . " AND userpassword = " . $_GET['passw'];
+	$result = getSingleRecordForColumn($sql, 'id');
 //	echo $sql . "<br>";
-	$result = mysqli_query($connection, $sql) or die("Connection Error : " . $sql . " - " . mysql_error($connection));
-	while( $row=mysqli_fetch_assoc($result) ){
-		$_SESSION['sessionid'] = generateSessionId();
-		$sql = "INSERT INTO git_session (id, userid, active, lastaccess) VALUES ('" . $_SESSION['sessionid'] . "' ," . $row['id'] . ", 1, '" . time() . "')";
+	$_SESSION['sessionid'] = generateSessionId();
+	$sql = "INSERT INTO git_session (id, userid, active, lastaccess) VALUES ('" . $_SESSION['sessionid'] . "' ," . $result . ", 1, '" . time() . "')";
 //		echo $sql . "<br>";
-		$connection = mysqli_connect(HOST, USER, PASS, DB) or die("Error " . mysqli_error($connection));
-		if (mysqli_query($connection, $sql) === TRUE) {
-			echo "OK";
-		} else {
-			echo "Error: " . $sql . "<br>" . $conn->error;
-		}
-	}	
-}
+	if (executeSQL( $sql ) === true) {
+		echo "OK";
+	} else {
+		echo "Error: " . $sql . "<br>" . $conn->error;
+	}
+}	
 
 ?>
+
+
+
+
+
+
+
