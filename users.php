@@ -3,7 +3,7 @@ session_start();
 // This script is used to verify if user session exist then extract which user type he is
 	require_once( './db/connexion.php' );
 	require_once( 'session.php' );
-//	$connection = mysqli_connect(HOST, USER, PASS, DB) or die("Error " . mysqli_error($connection));
+
 	if(( $_GET['sessionid'] != null) && sessionExist( $_GET['sessionid'] ) ){
 		// Verify type of user passed in parameter in URL is a valid user id and is active
 		if( $_GET['usertype'] != null ){
@@ -23,9 +23,9 @@ session_start();
 		// Update driver's data from user id, username and password passed in URL parameters
 		}else if( $_GET['updatedriver'] != null && $_GET['userid'] != null){
 	    	if( $_GET['username'] != null ){
-	    		$sql = "UPDATE git_users SET username = " . $_GET['username'] . " WHERE id = " . $_GET['userid'] ;
+	    		$sql = "UPDATE git_users SET username = '" . $_GET['username'] . "' WHERE id = " . $_GET['userid'] ;
 	    	} else if( $_GET['password'] != null ){
-	    		$sql = "UPDATE git_users SET password = " . $_GET['username'] . " WHERE id = " . $_GET['userid'] ;
+	    		$sql = "UPDATE git_users SET userpassword = '" . $_GET['password'] . "' WHERE id = " . $_GET['userid'] ;
 	    	} 
 	    	if (executeSQL($sql) == true) {
 	    		echo "OK";

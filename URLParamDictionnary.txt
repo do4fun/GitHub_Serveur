@@ -1,9 +1,9 @@
 USER.PHP
-required : sessionid
-	// SERVICE : Verify user type
+required : sessionid  ---  TESTÉ -> OK
+	// SERVICE : Verify user type  ---  TESTÉ -> OK
 	required : usertype
 		required : userid
-	// SERVICE : Update driver's data
+	// SERVICE : Update driver's data  ---  TESTÉ -> OK
 	required : updatedriver
 		required : userid
 			optional : username
@@ -14,26 +14,22 @@ DISPATCH.PHP
 required : sessionid
 required : dispatchid
 	//SERVICE : Return all active drivers linked for a dispatch id passed in parameter in URL
-	required : getdriveridof
+	required : getdriveridof  ---  TESTÉ -> OK
 	//SERVICE : Create driver and link him to a dispatch
-		required : createdriver
+	required : createdriver  ---  TESTÉ -> OK
 		required : username
 		required : password
 		required :  usertype
 		required : active
 	//SERVICE : Update driver's datas linked to a dispatch id
-	required : updatedriver
+	required : updatedriver  ---  TESTÉ -> OK
 		// update from username
 		required : username
-			// Update usertype
 			optional : usertype
-			// Enable, disable user
 			optional : active
 		// update from user id
 		required : userid
-			// Update usertype
 			optional : usertype
-			// Enable, disable user
 			optional : active
 
 
@@ -46,7 +42,7 @@ required : passw
 
 LOGBOOK.PHP
 //Manage Log and LogBook
-required : sessionid
+required : sessionid  ---  TESTÉ -> OK
 	// Add record into the database
 	required : activity
 	required : userid

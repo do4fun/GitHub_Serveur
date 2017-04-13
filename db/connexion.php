@@ -47,7 +47,8 @@ function getSingleRecordFromSQLForColumn( $sql, $column ){
 
 function executeSQL( $sql ){
 	$connection = mysqli_connect(HOST, USER, PASS, DB) or die("Error " . mysqli_error($connection));
-	if(  mysqli_query($connection, $sql) === TRUE ){
+//	echo $sql . "<br>";
+	if( mysqli_query($connection, $sql) === TRUE ){
 		return true;
 	}else {
 		echo "Error: " . $sql . "<br>" . mysqli_error($connection);
@@ -57,13 +58,12 @@ function executeSQL( $sql ){
 
 function getSQLResult( $sql ){
 	$connection = mysqli_connect(HOST, USER, PASS, DB) or die("Error " . mysqli_error($connection));
-	echo "Error: " . $sql . "<br>" . mysqli_error($connection);
 	return mysqli_query($connection, $sql);
 }
 
 function getJSONFormat( $result ){
 	$array = array();
-	//	echo $sql . "<br>";
+//	echo $sql . "<br>";
 	mysqli_data_seek($result, 0);
 	while($row=mysqli_fetch_assoc($result)){
 // if the query return a result(s) a JSON result is build from data(s) and session variable is set with user type.
@@ -72,7 +72,6 @@ function getJSONFormat( $result ){
 	$_SESSION['counter'] = count($array);
 	return json_encode($array);
 }
-
 
 function getJSONFormatForColumn($result, $column){
 	$array = array();
