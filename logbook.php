@@ -62,9 +62,6 @@ function generateJS( $userid, $year, $month, $day ){
 	$hourArray[4] = 0;
 	$minuteArray[4] = 0;
 	$activityArray[4] = 3;
-	$hourArray[5] = 0;
-	$minuteArray[5] = 0;
-	$activityArray[5] = 3;
 	
 	$actualSection = 1;
 	
