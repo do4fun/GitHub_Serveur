@@ -8,48 +8,48 @@ require_once( 'session.php' );
 generateJS( 7, 17, 4, 12 );
 
 /*
-// If the session id passed in URL parameter is valid, verify if actvity and userid URL parameter are not null and the add record into logbook table
-if( $_GET['sessionid'] != null && sessionExist( $_GET['sessionid'] ) ) {
-	if( !( $_GET['activity'] == null ) && !( $_GET['userid'] ) ){
-		$userid = $_GET['userid'];
-		$time = time();
-		$year = date( 'y', $time );
-		$month = date( 'm', $time );
-		$day = date( 'd', $time );
-		$hour = date( 'G', $time );
-		$minute = date( 'i', $time );
-		$sql = "INSERT INTO git_logbook ( userid, year, month, day, hour, minute, activity ) VALUES ( " . $userid . ", " . $year . ", " . $month . ", " . $day . ", " . $hour . ", " . $minute . ", ". $_GET['activity'] . " )";
-//		echo $sql . "<br>";
-		if ( executeSQL( $sql ) == true ) {
-			echo "OK";
-		} else {
-			echo "Error: " . $sql . "<br>" . $conn->error;
-		}
-	}else if( $_GET['activity'] == null ){
-		echo '<br>unavailable userid parameter';
-	}else if( $_GET['userid'] == null ){
-		echo '<br>unavailable userid parameter';
-	}
-} else {
-	echo '<br>Session unavailable';
-}
+ // If the session id passed in URL parameter is valid, verify if actvity and userid URL parameter are not null and the add record into logbook table
+ if( $_GET['sessionid'] != null && sessionExist( $_GET['sessionid'] ) ) {
+ if( !( $_GET['activity'] == null ) && !( $_GET['userid'] ) ){
+ $userid = $_GET['userid'];
+ $time = time();
+ $year = date( 'y', $time );
+ $month = date( 'm', $time );
+ $day = date( 'd', $time );
+ $hour = date( 'G', $time );
+ $minute = date( 'i', $time );
+ $sql = "INSERT INTO git_logbook ( userid, year, month, day, hour, minute, activity ) VALUES ( " . $userid . ", " . $year . ", " . $month . ", " . $day . ", " . $hour . ", " . $minute . ", ". $_GET['activity'] . " )";
+ //		echo $sql . "<br>";
+ if ( executeSQL( $sql ) == true ) {
+ echo "OK";
+ } else {
+ echo "Error: " . $sql . "<br>" . $conn->error;
+ }
+ }else if( $_GET['activity'] == null ){
+ echo '<br>unavailable userid parameter';
+ }else if( $_GET['userid'] == null ){
+ echo '<br>unavailable userid parameter';
+ }
+ } else {
+ echo '<br>Session unavailable';
+ }
 
-*/
+ */
 function generateJS( $userid, $year, $month, $day ){
-/*	$sql = "SELECT * FROM git_logbook WHERE userid = " . $userid . " AND year = " . $year . " AND month = " . $month . " AND day = " . $day;
-	$result = getSQLResult( $sql );
-*/	$hourArray = array();
+	/*	$sql = "SELECT * FROM git_logbook WHERE userid = " . $userid . " AND year = " . $year . " AND month = " . $month . " AND day = " . $day;
+	 $result = getSQLResult( $sql );
+	 */	$hourArray = array();
 	$minuteArray = array();
 	$activityArray = array();
 	$cssArrayActivities = array();
 	$cssArrayTime = array();
-	
+
 	$EMPTY = 1;
 	$PADDING = 2;
 	$MIDDLE = 3;
 	$BOTTOM = 4;
 
-//   Données de test pour les changements d'activitées.
+	//   Données de test pour les changements d'activitées.
 	$hourArray[0] = 0;
 	$minuteArray[0] = 0;
 	$activityArray[0] = 1;
@@ -65,10 +65,10 @@ function generateJS( $userid, $year, $month, $day ){
 	$hourArray[4] = 19;
 	$minuteArray[4] = 0;
 	$activityArray[4] = 1;
-/*	$hourArray[5] = 18;
-	$minuteArray[5] = 0;
-	$activityArray[5] = 2;
-*/	
+	/*	$hourArray[5] = 18;
+	 $minuteArray[5] = 0;
+	 $activityArray[5] = 2;
+	 */
 	$actualActivity = current($activityArray);
 	while($actualActivity != null  ){
 		$previousActivity = current($activityArray);
@@ -77,7 +77,7 @@ function generateJS( $userid, $year, $month, $day ){
 		$actualActivity = next($activityArray);
 		$actualMinute = next($minuteArray);
 		$actualHour = next($hourArray);
-		
+
 		$activityCount = $previousActivity - $actualActivity;
 		//  If the activity has change to higher value, print a line UP into the grid
 		if( $activityCount > 1 ){
@@ -86,10 +86,10 @@ function generateJS( $userid, $year, $month, $day ){
 			array_push($cssArrayActivities, generateCSS( $actualActivity, $BOTTOM, $actualHour, $actualMinute ));
 			array_push($cssArrayActivities, generateCSS( $actualActivity, $MIDDLE, $actualHour, $actualMinute ));
 			for( $activityCounter = 1; $activityCount > $activityCounter; $activityCounter++){
-					array_push($cssArrayActivities, generateCSS( $actualActivity + $activityCounter, $EMPTY, $actualHour, $actualMinute ));
-					array_push($cssArrayActivities, generateCSS( $actualActivity + $activityCounter, $PADDING, $actualHour, $actualMinute ));
-					array_push($cssArrayActivities, generateCSS( $actualActivity + $activityCounter, $MIDDLE, $actualHour, $actualMinute ));
-					array_push($cssArrayActivities, generateCSS( $actualActivity + $activityCounter, $BOTTOM, $actualHour, $actualMinute ));
+				array_push($cssArrayActivities, generateCSS( $actualActivity + $activityCounter, $EMPTY, $actualHour, $actualMinute ));
+				array_push($cssArrayActivities, generateCSS( $actualActivity + $activityCounter, $PADDING, $actualHour, $actualMinute ));
+				array_push($cssArrayActivities, generateCSS( $actualActivity + $activityCounter, $MIDDLE, $actualHour, $actualMinute ));
+				array_push($cssArrayActivities, generateCSS( $actualActivity + $activityCounter, $BOTTOM, $actualHour, $actualMinute ));
 			}
 		}
 		//  If the activity has change to higher value, print a line DOWN into the grid
@@ -118,7 +118,7 @@ function generateJS( $userid, $year, $month, $day ){
 			}
 		}
 
-		
+
 		//  If minute is not set to 0, fill the top line of each quarter hour AFTER each activities
 		$previousMinuteGap = 60 - $previousMinute;
 		if( $previousMinuteGap < 60 ){
@@ -129,26 +129,26 @@ function generateJS( $userid, $year, $month, $day ){
 				next($activityArray);
 			}
 		}
-	
+
 		//  Fill the top line of each hour BETWEEN each activities
 		$hourCount = $actualHour - $previousHour;
 		if( $hourCount > 0 ){
 			for( $hourCounter = 1; $hourCounter < $hourCount; $hourCounter++ ){
-					array_push($cssArrayTime, generateCSS( $previousActivity, $MIDDLE, $previousHour + $hourCounter, 0));
-					array_push($cssArrayTime, generateCSS( $previousActivity, $MIDDLE, $previousHour + $hourCounter, 15 ));
-					array_push($cssArrayTime, generateCSS( $previousActivity, $MIDDLE, $previousHour + $hourCounter, 30 ));
-					array_push($cssArrayTime, generateCSS( $previousActivity, $MIDDLE, $previousHour + $hourCounter, 45 ));
-//				}
+				array_push($cssArrayTime, generateCSS( $previousActivity, $MIDDLE, $previousHour + $hourCounter, 0));
+				array_push($cssArrayTime, generateCSS( $previousActivity, $MIDDLE, $previousHour + $hourCounter, 15 ));
+				array_push($cssArrayTime, generateCSS( $previousActivity, $MIDDLE, $previousHour + $hourCounter, 30 ));
+				array_push($cssArrayTime, generateCSS( $previousActivity, $MIDDLE, $previousHour + $hourCounter, 45 ));
+				//				}
 			}
 		}
 	}
 	generateLeftBoldCSS($cssArrayActivities);
 	generateTopBoldCSS($cssArrayTime);
-//	addjQueryToHTMLContent( $cssArrayActivities );
-//	displayArray( $cssArrayActivities );
-//	echo '-----------------------------------------' . '<br>';
-//	displayArray( $cssArrayTime );
-	}
+	//	addjQueryToHTMLContent( $cssArrayActivities );
+	//	displayArray( $cssArrayActivities );
+	//	echo '-----------------------------------------' . '<br>';
+	//	displayArray( $cssArrayTime );
+}
 
 function displayArray( $array ){
 	$arrayCounter = count( $array );
@@ -159,7 +159,7 @@ function displayArray( $array ){
 	}
 }
 
-function generateCSS( $activity, $section, $hour, $minute ){	
+function generateCSS( $activity, $section, $hour, $minute ){
 	$OFFDUTTY = 1;
 	$SLEEPER = 2;
 	$DRIVING = 3;
@@ -168,7 +168,7 @@ function generateCSS( $activity, $section, $hour, $minute ){
 	$PADDING = 2;
 	$MIDDLE = 3;
 	$BOTTOM = 4;
-	
+
 	if( $activity == $OFFDUTTY ){
 		$cssActivity = 'offduty';
 	}else if( $activity == $SLEEPER ){
@@ -187,9 +187,9 @@ function generateCSS( $activity, $section, $hour, $minute ){
 	}else if( $section == $BOTTOM ){
 		$cssSection = 'bottom';
 	}
-	
+
 	$cssHour = $hour . 'h';
-	
+
 	if( $minute < 10 ){
 		$cssMinute = '0' . $minute . 'm';
 	}else{
@@ -202,14 +202,14 @@ function generateCSS( $activity, $section, $hour, $minute ){
 function generateLeftBoldCSS( $classArray ){
 	$jQueryLeftBold = implode(", ", $classArray);
 	echo '$(\'' . $jQueryLeftBold . '\').addClass(\'template_size left_bold_template\');<br>';
-//	return '$(\'' . $jQueryLeftBold . '\').addClass(\'template_size left_bold_template\')';
-	
+	//	return '$(\'' . $jQueryLeftBold . '\').addClass(\'template_size left_bold_template\')';
+
 }
 
 function generateTopBoldCSS( $classArray ){
 	$jQueryLeftBold = implode(", ", $classArray);
 	echo '$(\'' . $jQueryLeftBold . '\').addClass(\'template_size top_bold_template\');<br>';
-//	return '$(\'' . $jQueryLeftBold . '\').addClass(\'template_size top_bold_template\')';
+	//	return '$(\'' . $jQueryLeftBold . '\').addClass(\'template_size top_bold_template\')';
 
 }
 
@@ -218,7 +218,7 @@ function addjQueryToHTMLContent( $arrayLeftBold ){
 	$content = $content . '<script> $(document).ready( function(){' . generateLeftBoldCSS($arrayLeftBold) .'});</script>';
 	$content = $content . '</head><body  onload="iterationGrid()"><div id="idGrid"  style="margin-top: 5%"></div></body></html>';
 	echo $content;
-	
+
 }
 
 ?>
