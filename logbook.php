@@ -7,7 +7,7 @@ require_once( 'session.php' );
 
 generateJS( 7, 17, 4, 12 );
 
-
+/*
 // If the session id passed in URL parameter is valid, verify if actvity and userid URL parameter are not null and the add record into logbook table
 if( $_GET['sessionid'] != null && sessionExist( $_GET['sessionid'] ) ) {
 	if( !( $_GET['activity'] == null ) && !( $_GET['userid'] ) ){
@@ -34,80 +34,121 @@ if( $_GET['sessionid'] != null && sessionExist( $_GET['sessionid'] ) ) {
 	echo '<br>Session unavailable';
 }
 
-
+*/
 function generateJS( $userid, $year, $month, $day ){
-	$sql = "SELECT * FROM git_logbook WHERE userid = " . $userid . " AND year = " . $year . " AND month = " . $month . " AND day = " . $day;
+/*	$sql = "SELECT * FROM git_logbook WHERE userid = " . $userid . " AND year = " . $year . " AND month = " . $month . " AND day = " . $day;
 	$result = getSQLResult( $sql );
-	$hourArray = array();
+*/	$hourArray = array();
 	$minuteArray = array();
 	$activityArray = array();
-	$cssArray = array();
+	$cssArrayActivities = array();
+	$cssArrayTime = array();
+	
+	$EMPTY = 1;
+	$PADDING = 2;
+	$MIDDLE = 3;
+	$BOTTOM = 4;
 
-	$PADDING = 1;
-	$MIDDLE = 2;
-	$BOTTOM = 3;
-
+//   Données de test pour les changements d'activitées.
 	$hourArray[0] = 0;
 	$minuteArray[0] = 0;
-	$activityArray[0] = 2;
-	$hourArray[1] = 0;
-	$minuteArray[1] = 0;
-	$activityArray[1] = 0;
-	$hourArray[2] = 0;
-	$minuteArray[2] = 0;
+	$activityArray[0] = 1;
+	$hourArray[1] = 5;
+	$minuteArray[1] = 15;
+	$activityArray[1] = 4;
+	$hourArray[2] = 7;
+	$minuteArray[2] = 30;
 	$activityArray[2] = 2;
-	$hourArray[3] = 0;
-	$minuteArray[3] = 0;
-	$activityArray[3] = 1;
-	$hourArray[4] = 0;
+	$hourArray[3] = 10;
+	$minuteArray[3] = 45;
+	$activityArray[3] = 4;
+	$hourArray[4] = 19;
 	$minuteArray[4] = 0;
-	$activityArray[4] = 3;
-	
-	$actualSection = 1;
-	
-	$counter = 0;
-	$arrayCounter = count( $hourArray );
-	while( $counter < $arrayCounter ){
-		$previousActivity = $activityArray[$counter - 1];
-		$actualActivity = $activityArray[$counter];
-		$actualHour = $hourArray[$counter];
-		$actualMinute = $minuteArray[$counter];
-		if( $counter > 0 ){
-			$activityCount = $actualActivity - $previousActivity;
-			//  If the activity has change to higher value, print a line down into the grid
-			if( $activityCount > 0 ){
-				echo generateCSS( $previousActivity, $MIDDLE, $actualHour, $actualMinute ) . "<br>";
-				array_push($cssArray, generateCSS( $previousActivity, $MIDDLE, $actualHour, $actualMinute ));
-				for( $activityCounter = 0; $activityCounter < $activityCount;   ){
-					echo generateCSS( $previousActivity + $activityCounter, $BOTTOM, $actualHour, $actualMinute ) . "<br>";
-					array_push($cssArray, generateCSS( $previousActivity + $activityCounter, $BOTTOM, $actualHour, $actualMinute ));
-					$activityCounter++;
-					echo generateCSS( $previousActivity + $activityCounter, $PADDING, $actualHour, $actualMinute ) . "<br>";
-					array_push($cssArray, generateCSS( $previousActivity + $activityCounter, $PADDING, $actualHour, $actualMinute ));
-					echo generateCSS( $previousActivity + $activityCounter, $MIDDLE, $actualHour, $actualMinute ) . "<br>";
-					array_push($cssArray, generateCSS( $previousActivity + $activityCounter, $MIDDLE, $actualHour, $actualMinute ));
-				}
-			}
-			$activityCount = $previousActivity - $actualActivity;
-			if( $activityCount > 0 ){
-//				echo generateCSS( $previousActivity, $MIDDLE, $actualHour, $actualMinute ) . " - 1<br>";
-//				array_push($cssArray, generateCSS( $previousActivity, $MIDDLE, $actualHour, $actualMinute ));
-				for( $activityCounter = $activityCount; $activityCounter > 0; ){
-					echo generateCSS( $previousActivity - $activityCounter, $PADDING, $actualHour, $actualMinute ) . " - 2<br>";
-					array_push($cssArray, generateCSS( $previousActivity - $activityCounter, $PADDING, $actualHour, $actualMinute ));
-					$activityCounter--;
-					echo generateCSS( $previousActivity - $activityCounter, $BOTTOM, $actualHour, $actualMinute ) . " - 3<br>";
-					array_push($cssArray, generateCSS( $previousActivity - $activityCounter, $BOTTOM, $actualHour, $actualMinute ));
-					echo generateCSS( $previousActivity - $activityCounter, $MIDDLE, $actualHour, $actualMinute ) . " - 4<br>";
-					array_push($cssArray, generateCSS( $previousActivity - $activityCounter, $MIDDLE, $actualHour, $actualMinute ));
-				}
+	$activityArray[4] = 1;
+/*	$hourArray[5] = 18;
+	$minuteArray[5] = 0;
+	$activityArray[5] = 2;
+*/	
+	$actualActivity = current($activityArray);
+	while($actualActivity != null  ){
+		$previousActivity = current($activityArray);
+		$previousMinute = current($minuteArray);
+		$previousHour = current($hourArray);
+		$actualActivity = next($activityArray);
+		$actualMinute = next($minuteArray);
+		$actualHour = next($hourArray);
+		
+		$activityCount = $previousActivity - $actualActivity;
+		//  If the activity has change to higher value, print a line UP into the grid
+		if( $activityCount > 1 ){
+			array_push($cssArrayActivities, generateCSS( $previousActivity, $PADDING, $actualHour, $actualMinute ));
+			array_push($cssArrayActivities, generateCSS( $previousActivity, $EMPTY, $actualHour, $actualMinute ));
+			array_push($cssArrayActivities, generateCSS( $actualActivity, $BOTTOM, $actualHour, $actualMinute ));
+			array_push($cssArrayActivities, generateCSS( $actualActivity, $MIDDLE, $actualHour, $actualMinute ));
+			for( $activityCounter = 1; $activityCount > $activityCounter; $activityCounter++){
+					array_push($cssArrayActivities, generateCSS( $actualActivity + $activityCounter, $EMPTY, $actualHour, $actualMinute ));
+					array_push($cssArrayActivities, generateCSS( $actualActivity + $activityCounter, $PADDING, $actualHour, $actualMinute ));
+					array_push($cssArrayActivities, generateCSS( $actualActivity + $activityCounter, $MIDDLE, $actualHour, $actualMinute ));
+					array_push($cssArrayActivities, generateCSS( $actualActivity + $activityCounter, $BOTTOM, $actualHour, $actualMinute ));
 			}
 		}
-		$counter++;
-		echo '-----------------------------------------' . '<br>';
+		//  If the activity has change to higher value, print a line DOWN into the grid
+		$activityCount = $actualActivity - $previousActivity;
+		if( $activityCount > 1 ){
+			array_push($cssArrayActivities, generateCSS( $actualActivity, $EMPTY, $actualHour, $actualMinute ));
+			array_push($cssArrayActivities, generateCSS( $actualActivity, $PADDING, $actualHour, $actualMinute ));
+			array_push($cssArrayActivities, generateCSS( $previousActivity, $MIDDLE, $actualHour, $actualMinute ));
+			array_push($cssArrayActivities, generateCSS( $previousActivity, $BOTTOM, $actualHour, $actualMinute ));
+			for( $activityCounter = 1; $activityCount > $activityCounter; $activityCounter++){
+				array_push($cssArrayActivities, generateCSS( $previousActivity + $activityCounter, $EMPTY, $actualHour, $actualMinute ));
+				array_push($cssArrayActivities, generateCSS( $previousActivity + $activityCounter, $PADDING, $actualHour, $actualMinute ));
+				array_push($cssArrayActivities, generateCSS( $previousActivity + $activityCounter, $MIDDLE, $actualHour, $actualMinute ));
+				array_push($cssArrayActivities, generateCSS( $previousActivity + $activityCounter, $BOTTOM, $actualHour, $actualMinute ));
+			}
+		}
+		//  If minute is not set to 0, fill the top line of each quarter hour BEFORE each activities
+		$previousMinuteGap = 60 - $previousMinute;
+		if( $previousMinuteGap < 60 ){
+			$previousMinuteStep = $previousMinute / 15;
+			for( $previousMinuteStepCounter = 1; $previousMinuteStepCounter <= $previousMinuteStep; $previousMinuteStepCounter++ ){
+				prev($activityArray);
+				$beforePreviousActivity = prev($activityArray);
+				array_push($cssArrayTime, generateCSS( $beforePreviousActivity, $MIDDLE, $previousHour, $previousMinute - ($previousMinuteStepCounter * 15 )));
+				next($activityArray);next($activityArray);
+			}
+		}
+
+		
+		//  If minute is not set to 0, fill the top line of each quarter hour AFTER each activities
+		$previousMinuteGap = 60 - $previousMinute;
+		if( $previousMinuteGap < 60 ){
+			$previousMinuteStep = $previousMinuteGap / 15;
+			for( $previousMinuteStepCounter = 0; $previousMinuteStepCounter <= $previousMinuteStep; $previousMinuteStepCounter++ ){
+				$beforePreviousActivity = prev($activityArray);
+				array_push($cssArrayTime, generateCSS( $beforePreviousActivity, $MIDDLE, $previousHour, $previousMinute + ($previousMinuteStepCounter * 15 )));
+				next($activityArray);
+			}
+		}
+	
+		//  Fill the top line of each hour BETWEEN each activities
+		$hourCount = $actualHour - $previousHour;
+		if( $hourCount > 0 ){
+			for( $hourCounter = 1; $hourCounter < $hourCount; $hourCounter++ ){
+					array_push($cssArrayTime, generateCSS( $previousActivity, $MIDDLE, $previousHour + $hourCounter, 0));
+					array_push($cssArrayTime, generateCSS( $previousActivity, $MIDDLE, $previousHour + $hourCounter, 15 ));
+					array_push($cssArrayTime, generateCSS( $previousActivity, $MIDDLE, $previousHour + $hourCounter, 30 ));
+					array_push($cssArrayTime, generateCSS( $previousActivity, $MIDDLE, $previousHour + $hourCounter, 45 ));
+//				}
+			}
+		}
 	}
-//	displayArray( $cssArray );
-}
+	generateLeftBoldCSS($cssArrayActivities);
+	generateTopBoldCSS($cssArrayTime);
+//	addjQueryToHTMLContent( $cssArrayActivities );
+//	displayArray( $cssArrayActivities );
+//	echo '-----------------------------------------' . '<br>';
+//	displayArray( $cssArrayTime );
+	}
 
 function displayArray( $array ){
 	$arrayCounter = count( $array );
@@ -119,13 +160,14 @@ function displayArray( $array ){
 }
 
 function generateCSS( $activity, $section, $hour, $minute ){	
-	$OFFDUTTY = 0;
-	$SLEEPER = 1;
-	$DRIVING = 2;
-	$ONDUTY = 3;
-	$PADDING = 1;
-	$MIDDLE = 2;
-	$BOTTOM = 3;
+	$OFFDUTTY = 1;
+	$SLEEPER = 2;
+	$DRIVING = 3;
+	$ONDUTY = 4;
+	$EMPTY = 1;
+	$PADDING = 2;
+	$MIDDLE = 3;
+	$BOTTOM = 4;
 	
 	if( $activity == $OFFDUTTY ){
 		$cssActivity = 'offduty';
@@ -136,18 +178,18 @@ function generateCSS( $activity, $section, $hour, $minute ){
 	}else if( $activity == $ONDUTY ){
 		$cssActivity = 'onduty';
 	}
-	if( $section == $PADDING ){
+	if( $section == $EMPTY ){
+		$cssSection = 'empty';
+	}else if( $section == $PADDING ){
 		$cssSection = 'padding';
 	}else if( $section == $MIDDLE ){
 		$cssSection = 'middle';
 	}else if( $section == $BOTTOM ){
 		$cssSection = 'bottom';
 	}
-	if( $hour < 10 ){
-		$cssHour = '0' . $hour . 'h';
-	}else{
-		$cssHour = $hour . 'h';
-	}
+	
+	$cssHour = $hour . 'h';
+	
 	if( $minute < 10 ){
 		$cssMinute = '0' . $minute . 'm';
 	}else{
@@ -157,4 +199,30 @@ function generateCSS( $activity, $section, $hour, $minute ){
 	return '#' . $cssActivity . ' #' . $cssHour . ' #' . $cssSection . ' #' . $cssMinute;
 }
 
+function generateLeftBoldCSS( $classArray ){
+	$jQueryLeftBold = implode(", ", $classArray);
+	echo '$(\'' . $jQueryLeftBold . '\').addClass(\'template_size left_bold_template\');<br>';
+//	return '$(\'' . $jQueryLeftBold . '\').addClass(\'template_size left_bold_template\')';
+	
+}
+
+function generateTopBoldCSS( $classArray ){
+	$jQueryLeftBold = implode(", ", $classArray);
+	echo '$(\'' . $jQueryLeftBold . '\').addClass(\'template_size top_bold_template\');<br>';
+//	return '$(\'' . $jQueryLeftBold . '\').addClass(\'template_size top_bold_template\')';
+
+}
+
+function addjQueryToHTMLContent( $arrayLeftBold ){
+	$content = '<html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><link rel="stylesheet" type="text/css" href="css/fichejournaliere.css" /><script src="js/jquery-3.2.0.js"></script><script src="js/constructionGrid.js"></script>';
+	$content = $content . '<script> $(document).ready( function(){' . generateLeftBoldCSS($arrayLeftBold) .'});</script>';
+	$content = $content . '</head><body  onload="iterationGrid()"><div id="idGrid"  style="margin-top: 5%"></div></body></html>';
+	echo $content;
+	
+}
+
 ?>
+
+
+
+
