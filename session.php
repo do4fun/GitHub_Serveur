@@ -36,8 +36,7 @@ function generateSessionId(){
 // Update last access column into session table for specific user id passed parameter
 function updateLastAccess( $sessionid ){
 	$connection = mysqli_connect(HOST, USER, PASS, DB) or die("Error " . mysqli_error($connection));
-	$sql = "UPDATE git_session lastaccess = " . time(); //. " WHERE sessionid = " . $sessionid ;
-	$connection = mysqli_connect(HOST, USER, PASS, DB) or die("Error " . mysqli_error($connection));
+	$sql = "UPDATE git_session SET lastaccess = " . time(); //. " WHERE sessionid = " . $sessionid ;
 	mysqli_query($connection, $sql);	
 }
 
@@ -50,7 +49,8 @@ if( $_GET['username'] != null && $_GET['passw'] != null ){
 	$sql = "INSERT INTO git_session (id, userid, active, lastaccess) VALUES ('" . $_SESSION['sessionid'] . "' ," . $result . ", 1, '" . time() . "')";
 //		echo $sql . "<br>";
 	if (executeSQL( $sql ) === true) {
-		echo "OK";
+		$sql = "SELECT id as sessionid, userid FROM git_session WHERE id = " . $_SESSION['sessionid'];
+		echo getJSONFormat( getSQLResult( $sql ) );
 	} else {
 		echo "Error: " . $sql . "<br>" . $conn->error;
 	}
