@@ -9,7 +9,7 @@ if( $_GET['sessionid'] != null && $_GET['dispatchid'] != null ){
 	if(sessionExist( $_GET['sessionid'] ) ){
 		// Return all active drivers linked for a dispatch id passed in parameter in URL
 		if( $_GET['getdriveridof'] != null ) {
-			$sql = "SELECT d.userid as id, u.username as usertype FROM git_users u, git_dispatch d WHERE u.active = 1 AND u.active = 1 AND d.dispatchid = u.id AND u.usertype = 1 AND u.id = " . $_GET['getdriveridof'];
+			$sql = "SELECT d.userid as userid, u.username as usertype, u.firstname as firstname, u.secondname as secondname FROM git_users u, git_dispatch d WHERE u.active = 1 AND u.active = 1 AND d.dispatchid = u.id AND u.usertype = 1 AND u.id = " . $_GET['getdriveridof'];
 			echo getJSONFormat(getSQLResult( $sql ));
 		// Create driver and link him to a dispatch if all parameters are passed in URL	are not null
 		}else if( $_GET['createdriver'] != null ){
