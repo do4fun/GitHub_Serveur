@@ -2,6 +2,7 @@
 require_once( 'dbSettings.php' );
 
 /*
+ * 
 function getJSONFromSQL( $sql ){
 	$connection = mysqli_connect(HOST, USER, PASS, DB) or die("Error " . mysqli_error($connection));
 	$result = mysqli_query($connection, $sql);
