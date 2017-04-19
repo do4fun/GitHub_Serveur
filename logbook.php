@@ -52,23 +52,20 @@ function generateJS( $userid, $year, $month, $day ){
 	//   Données de test pour les changements d'activitées.
 	$hourArray[0] = 0;
 	$minuteArray[0] = 0;
-	$activityArray[0] = 1;
+	$activityArray[0] = 2;
 	$hourArray[1] = 5;
 	$minuteArray[1] = 15;
-	$activityArray[1] = 4;
+	$activityArray[1] = 1;
 	$hourArray[2] = 7;
 	$minuteArray[2] = 30;
-	$activityArray[2] = 2;
+	$activityArray[2] = 3;
 	$hourArray[3] = 10;
 	$minuteArray[3] = 45;
 	$activityArray[3] = 4;
 	$hourArray[4] = 19;
 	$minuteArray[4] = 0;
 	$activityArray[4] = 1;
-	/*	$hourArray[5] = 18;
-	 $minuteArray[5] = 0;
-	 $activityArray[5] = 2;
-	 */
+
 	$actualActivity = current($activityArray);
 	while($actualActivity != null  ){
 		$previousActivity = current($activityArray);
@@ -80,7 +77,7 @@ function generateJS( $userid, $year, $month, $day ){
 
 		$activityCount = $previousActivity - $actualActivity;
 		//  If the activity has change to higher value, print a line UP into the grid
-		if( $activityCount > 1 ){
+		if( $activityCount >= 1 && $previousActivity > 0 && $actualActivity > 0 ){
 			array_push($cssArrayActivities, generateCSS( $previousActivity, $PADDING, $actualHour, $actualMinute ));
 			array_push($cssArrayActivities, generateCSS( $previousActivity, $EMPTY, $actualHour, $actualMinute ));
 			array_push($cssArrayActivities, generateCSS( $actualActivity, $BOTTOM, $actualHour, $actualMinute ));
@@ -94,11 +91,11 @@ function generateJS( $userid, $year, $month, $day ){
 		}
 		//  If the activity has change to higher value, print a line DOWN into the grid
 		$activityCount = $actualActivity - $previousActivity;
-		if( $activityCount > 1 ){
-			array_push($cssArrayActivities, generateCSS( $actualActivity, $EMPTY, $actualHour, $actualMinute ));
-			array_push($cssArrayActivities, generateCSS( $actualActivity, $PADDING, $actualHour, $actualMinute ));
+		if( $activityCount >= 1 ){
 			array_push($cssArrayActivities, generateCSS( $previousActivity, $MIDDLE, $actualHour, $actualMinute ));
 			array_push($cssArrayActivities, generateCSS( $previousActivity, $BOTTOM, $actualHour, $actualMinute ));
+			array_push($cssArrayActivities, generateCSS( $actualActivity, $EMPTY, $actualHour, $actualMinute ));
+			array_push($cssArrayActivities, generateCSS( $actualActivity, $PADDING, $actualHour, $actualMinute ));
 			for( $activityCounter = 1; $activityCount > $activityCounter; $activityCounter++){
 				array_push($cssArrayActivities, generateCSS( $previousActivity + $activityCounter, $EMPTY, $actualHour, $actualMinute ));
 				array_push($cssArrayActivities, generateCSS( $previousActivity + $activityCounter, $PADDING, $actualHour, $actualMinute ));
@@ -142,12 +139,12 @@ function generateJS( $userid, $year, $month, $day ){
 			}
 		}
 	}
-	generateLeftBoldCSS($cssArrayActivities);
-	generateTopBoldCSS($cssArrayTime);
-	//	addjQueryToHTMLContent( $cssArrayActivities );
-	//	displayArray( $cssArrayActivities );
-	//	echo '-----------------------------------------' . '<br>';
-	//	displayArray( $cssArrayTime );
+//	generateLeftBoldCSS($cssArrayActivities);
+//	generateTopBoldCSS($cssArrayTime);
+	addjQueryToHTMLContent( $cssArrayActivities, $cssArrayTime );
+//	displayArray( $cssArrayActivities );
+//	echo '-----------------------------------------' . '<br>';
+//	displayArray( $cssArrayTime );
 }
 
 function displayArray( $array ){
@@ -201,23 +198,25 @@ function generateCSS( $activity, $section, $hour, $minute ){
 
 function generateLeftBoldCSS( $classArray ){
 	$jQueryLeftBold = implode(", ", $classArray);
-	echo '$(\'' . $jQueryLeftBold . '\').addClass(\'template_size left_bold_template\');<br>';
+	echo '$(\'' . $jQueryLeftBold . '\').addClass(\'template_size left_bold_template\');';
 	//	return '$(\'' . $jQueryLeftBold . '\').addClass(\'template_size left_bold_template\')';
 
 }
 
 function generateTopBoldCSS( $classArray ){
 	$jQueryLeftBold = implode(", ", $classArray);
-	echo '$(\'' . $jQueryLeftBold . '\').addClass(\'template_size top_bold_template\');<br>';
+	echo '$(\'' . $jQueryLeftBold . '\').addClass(\'template_size top_bold_template\');';
 	//	return '$(\'' . $jQueryLeftBold . '\').addClass(\'template_size top_bold_template\')';
-
 }
 
-function addjQueryToHTMLContent( $arrayLeftBold ){
-	$content = '<html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><link rel="stylesheet" type="text/css" href="css/fichejournaliere.css" /><script src="js/jquery-3.2.0.js"></script><script src="js/constructionGrid.js"></script>';
-	$content = $content . '<script> $(document).ready( function(){' . generateLeftBoldCSS($arrayLeftBold) .'});</script>';
-	$content = $content . '</head><body  onload="iterationGrid()"><div id="idGrid"  style="margin-top: 5%"></div></body></html>';
-	echo $content;
+function addjQueryToHTMLContent( $cssArrayActivities, $cssArrayTime ){
+	echo '<html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><link rel="stylesheet" type="text/css" href="css/fichejournaliere.css" /><script src="js/jquery-3.2.0.js"></script><script src="js/constructionGrid.js"></script>';
+	echo '<script>jQuery(document).ready(function(){';
+	generateLeftBoldCSS($cssArrayActivities);
+	generateTopBoldCSS($cssArrayTime);
+	echo '	});</script>';
+	echo '</head><body  onload="iterationGrid()"><div id="idGrid"  style="margin-top: 5%"></div></body></html>';
+	//  . generateLeftBoldCSS($arrayLeftBold) .
 
 }
 
