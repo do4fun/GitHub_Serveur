@@ -50,7 +50,7 @@ if( $_GET['username'] != null && $_GET['passw'] != null ){
 //		echo $sql . "<br>";
 	if (executeSQL( $sql ) === true) {
 		$sql = "SELECT id as sessionid, userid FROM git_session WHERE id = " . $_SESSION['sessionid'];
-		echo getJSONFormat( getSQLResult( $sql ) );
+		echo getJSONFormat(getSQLResult($sql));
 	} else {
 		echo "Error: " . $sql . "<br>" . $conn->error;
 	}
