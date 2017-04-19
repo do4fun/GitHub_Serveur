@@ -1,9 +1,6 @@
 <?php
+require_once( 'dbSettings.php' );
 
-define('HOST', 'sql208.byethost18.com');
-define('USER', 'b18_19058939');
-define('PASS', 'congobongo');
-define('DB', 'b18_19058939_DB');
 /*
 function getJSONFromSQL( $sql ){
 	$connection = mysqli_connect(HOST, USER, PASS, DB) or die("Error " . mysqli_error($connection));
