@@ -43,7 +43,7 @@ function updateLastAccess( $sessionid ){
 // This script is used to verify if user name and password passed in URL parameter are linked with a active user in the database
 if( $_GET['username'] != null && $_GET['passw'] != null ){
 	$sql = "SELECT * FROM git_users WHERE username = " . $_GET['username'] . " AND userpassword = " . $_GET['passw'];
-	$result = getSingleRecordForColumn($sql, 'id');
+	$result = getSingleRecordForColumn(getSQLResult($sql), 'id');
 //	echo $sql . "<br>";
 	$_SESSION['sessionid'] = generateSessionId();
 	$sql = "INSERT INTO git_session (id, userid, active, lastaccess) VALUES ('" . $_SESSION['sessionid'] . "' ," . $result . ", 1, '" . time() . "')";
